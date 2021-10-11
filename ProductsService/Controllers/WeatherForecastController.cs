@@ -21,7 +21,14 @@ namespace ProductsService.Controllers
             _logger = logger;
         }
 
+        [HttpGet("two")]
+        public IActionResult Get([FromQuery]TestItem testItem)
+        {
+            return Ok($"{testItem.Id}:{testItem.Title}");
+        }
+
         [HttpGet]
+        [HttpGet("all")]
         public IActionResult Get()
         {
             var rng = new Random();
