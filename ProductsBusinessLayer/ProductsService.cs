@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer
 {
-    public class ProductsService
+    public class ProductsService : IProductsService
     {
+        public ProductsService()
+        {
+        }
+
         private static ProductsRepository _productsRepository;
 
         static ProductsService()
