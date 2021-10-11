@@ -1,11 +1,8 @@
-version: 1.0.{build}
+configuration: Release
+
 before_build:
-- cmd: dotnet restore
+ - nuget restore
+
 build:
-  publish_aspnet_core: true
-  verbosity: minimal
-test:
-  # only assemblies to test
-  assemblies:
-    only:
-      - '**\*.Tests.dll'
+ verbosity:minimal
+ publich_wap:true
