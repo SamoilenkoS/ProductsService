@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductsBusinessLayer;
 using ProductsBusinessLayer.DTOs;
-using ProductsCore.Models;
 using System;
 using System.Threading.Tasks;
 

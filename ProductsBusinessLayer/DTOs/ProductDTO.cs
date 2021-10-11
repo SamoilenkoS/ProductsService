@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ProductsBusinessLayer.DTOs
+﻿namespace ProductsBusinessLayer.DTOs
 {
     public class ProductDTO
     {
