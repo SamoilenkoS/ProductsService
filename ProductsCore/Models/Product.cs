@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProductsCore.Models
 {
@@ -6,7 +7,8 @@ namespace ProductsCore.Models
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
+        [Column("CategoryId")]
         public Category Category { get; set; }
         public bool IsAvailableToBuy { get; set; }
         //TODO Add Sizes

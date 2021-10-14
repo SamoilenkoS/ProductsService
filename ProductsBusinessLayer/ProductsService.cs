@@ -11,55 +11,38 @@ namespace ProductsBusinessLayer
     public class ProductsService : IProductsService
     {
         private readonly IMapper _mapper;
+        private readonly IProductsRepository _productsRepository;
 
-        public ProductsService(IMapper mapper)
+        public ProductsService(IProductsRepository productsRepository, IMapper mapper)
         {
             _mapper = mapper;
-        }
-
-        private static ProductsRepository _productsRepository;
-
-        static ProductsService()
-        {
-            _productsRepository = new ProductsRepository();
+            _productsRepository = productsRepository;
         }
 
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            await Task.CompletedTask;
-
-            return _productsRepository.GetAll();
+            return await _productsRepository.GetAll();
         }
 
         public async Task<Product> GetProductById(Guid id)
-        {
-            await Task.CompletedTask;
-
-            return _productsRepository.GetById(id);
-        }
+            => await _productsRepository.GetById(id);
 
         public async Task<Product> DeleteProductById(Guid id)
-        {
-            await Task.CompletedTask;
-
-            return _productsRepository.DeleteById(id);
-        }
+            => await _productsRepository.DeleteById(id);
 
         public async Task<Guid> CreateProduct(ProductDTO productDTO)
         {
-            await Task.CompletedTask;
             var product = _mapper.Map<Product>(productDTO);
 
-            return _productsRepository.Create(product);
+            return await _productsRepository.Create(product);
         }
 
         public async Task<Product> UpdateProduct(Guid id, ProductDTO productDTO)
         {
-            await Task.CompletedTask;
             var product = _mapper.Map<Product>(productDTO);
             product.Id = id;
 
-            return _productsRepository.Update(product);
+            return await _productsRepository.Update(product);
         }
     }
 }
