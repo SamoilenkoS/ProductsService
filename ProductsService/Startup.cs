@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductsBusinessLayer;
+using ProductsBusinessLayer.MapperProfiles;
+using System.Reflection;
 
 namespace ProductsPresentationLayer
 {
@@ -19,6 +21,13 @@ namespace ProductsPresentationLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var assemblies = new[]
+            {
+                Assembly.GetAssembly(typeof(ProductsProfile))
+            };
+
+            services.AddAutoMapper(assemblies);
+
             services.AddScoped<IProductsService, ProductsService>();
             services.AddControllers();
         }

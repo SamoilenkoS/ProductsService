@@ -1,4 +1,5 @@
-﻿using ProductsBusinessLayer.DTOs;
+﻿using AutoMapper;
+using ProductsBusinessLayer.DTOs;
 using ProductsCore.Models;
 using ProductsDataLayer;
 using System;
@@ -9,8 +10,11 @@ namespace ProductsBusinessLayer
 {
     public class ProductsService : IProductsService
     {
-        public ProductsService()
+        private readonly IMapper _mapper;
+
+        public ProductsService(IMapper mapper)
         {
+            _mapper = mapper;
         }
 
         private static ProductsRepository _productsRepository;
@@ -44,39 +48,18 @@ namespace ProductsBusinessLayer
         public async Task<Guid> CreateProduct(ProductDTO productDTO)
         {
             await Task.CompletedTask;
-            if (Enum.TryParse(typeof(Category), productDTO.Category, out var category))
-            {
-                var product = new Product
-                {
-                    Category = (Category)category,
-                    IsAvailableToBuy = true,
-                    Price = productDTO.Price,
-                    Title = productDTO.Title
-                };
+            var product = _mapper.Map<Product>(productDTO);
 
-                return _productsRepository.Create(product);
-            }
-
-            return Guid.Empty;
+            return _productsRepository.Create(product);
         }
 
         public async Task<Product> UpdateProduct(Guid id, ProductDTO productDTO)
         {
             await Task.CompletedTask;
-            if (Enum.TryParse(typeof(Category), productDTO.Category, out var category))
-            {
-                var product = new Product
-                {
-                    Id = id,
-                    Category = (Category)category,
-                    Price = productDTO.Price,
-                    Title = productDTO.Title
-                };
+            var product = _mapper.Map<Product>(productDTO);
+            product.Id = id;
 
-                return _productsRepository.Update(product);
-            }
-
-            return null;
+            return _productsRepository.Update(product);
         }
     }
 }
