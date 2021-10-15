@@ -57,6 +57,7 @@ namespace ProductsDataLayer
         public async Task<Product> Update(Product product)
         {
             _dbContext.Attach(product);
+            _dbContext.Entry(product).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
 
             return product;

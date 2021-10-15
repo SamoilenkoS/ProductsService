@@ -23,16 +23,8 @@ namespace ProductsDataLayer
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Product>(entity =>
             {
-                // Set key for entity
                 entity.HasKey(p => p.Id);
             });
-
-            //modelBuilder
-            //   .Entity<Product>()
-            //   .Property(e => e.Category)
-            //   .HasConversion(
-            //       v => v,
-            //       v => v);
         }
     }
 }
