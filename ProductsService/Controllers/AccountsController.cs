@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ProductsBusinessLayer;
 
 namespace ProductsPresentationLayer.Controllers
 {
@@ -12,6 +13,13 @@ namespace ProductsPresentationLayer.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
+        private readonly IAuthService _authService;
+
+        public AccountsController(IAuthService authService)
+        {
+            _authService = authService;
+        }
+
         [HttpPost("manager")]
         public async Task<IActionResult> CreateManager(AccountInfo accountInfo)
         {
@@ -41,10 +49,9 @@ namespace ProductsPresentationLayer.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginInfo login)
+        public async Task<IActionResult> Login(LoginInfo loginInfo)
         {
-            await Task.CompletedTask;
-            return Ok();
+            return Ok(_authService.Login(loginInfo));
         }
 
         [HttpPost("register")]

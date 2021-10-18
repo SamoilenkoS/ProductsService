@@ -61,8 +61,13 @@
   <ItemGroup>
     <Build Include="Tables\Categories.sql" />
     <Build Include="Tables\Products.sql" />
+    <Build Include="Tables\Roles.sql" />
+    <Build Include="Tables\Users.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="PreInsertData.sql" />
+    <PostDeploy Include="PrefillDB.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ProductsMsSql.refactorlog" />
   </ItemGroup>
 </Project>
