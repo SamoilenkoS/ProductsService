@@ -38,6 +38,13 @@ namespace ProductsPresentationLayer.Controllers
             return NotFound();
         }
 
+        [HttpGet("query")]
+        public async Task<IActionResult> SearchProduct(string query)
+        {
+            await Task.CompletedTask;
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductById(Guid id)
         {
