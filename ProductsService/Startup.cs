@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using ProductsBusinessLayer;
 using ProductsBusinessLayer.MapperProfiles;
 using ProductsBusinessLayer.Services.AuthService;
+using ProductsBusinessLayer.Services.HashService;
 using ProductsBusinessLayer.Services.ProductService;
 using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Options;
@@ -63,6 +64,7 @@ namespace ProductsPresentationLayer
             services.AddScoped<IProductRepository, ProductRepositoryDb>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IHashService, HashService>();
             services.AddControllers();
         }
 

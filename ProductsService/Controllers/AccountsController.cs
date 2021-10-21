@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using ProductsBusinessLayer.Services.AuthService;
 using ProductsBusinessLayer.Services.UserService;
-using System.IdentityModel.Tokens.Jwt;
 using ProductsCore.Requests;
 
 namespace ProductsPresentationLayer.Controllers
