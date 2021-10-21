@@ -1,9 +1,10 @@
 ﻿using ProductsCore.Models;
+using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer
 {
     public interface IAuthService
     {
-        string Login(LoginInfo loginInfo);
+        Task<string> LoginAsync(LoginInfo loginInfo);
     }
 }

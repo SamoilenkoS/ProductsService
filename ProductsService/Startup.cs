@@ -54,6 +54,7 @@ namespace ProductsPresentationLayer
             services.AddAutoMapper(assemblies);
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductsRepository, ProductsRepositoryDb>();
             services.AddScoped<IProductsService, ProductsService>();
             services.AddControllers();

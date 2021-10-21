@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductsCore.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ProductsBusinessLayer;
 
@@ -51,7 +49,13 @@ namespace ProductsPresentationLayer.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginInfo loginInfo)
         {
-            return Ok(_authService.Login(loginInfo));
+            var token = await _authService.LoginAsync(loginInfo);
+            if (!string.IsNullOrEmpty(token))
+            {
+                return Ok(token);
+            }
+
+            return BadRequest("Invalid username or password.");
         }
 
         [HttpPost("register")]
