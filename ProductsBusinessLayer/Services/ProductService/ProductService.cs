@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using ProductsBusinessLayer.DTOs;
 using ProductsCore.Models;
-using ProductsDataLayer;
+using ProductsDataLayer.Repositories.ProductRepository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ProductsBusinessLayer
+namespace ProductsBusinessLayer.Services.ProductService
 {
-    public class ProductsService : IProductsService
+    public class ProductService : IProductService
     {
         private readonly IMapper _mapper;
-        private readonly IProductsRepository _productsRepository;
+        private readonly IProductRepository _productsRepository;
 
-        public ProductsService(IProductsRepository productsRepository, IMapper mapper)
+        public ProductService(IProductRepository productsRepository, IMapper mapper)
         {
             _mapper = mapper;
             _productsRepository = productsRepository;

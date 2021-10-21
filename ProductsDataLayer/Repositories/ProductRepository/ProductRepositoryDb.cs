@@ -3,16 +3,15 @@ using ProductsCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductsDataLayer
+namespace ProductsDataLayer.Repositories.ProductRepository
 {
-    public class ProductsRepositoryDb : IProductsRepository
+    public class ProductRepositoryDb : IProductRepository
     {
         private readonly EFCoreContext _dbContext;
 
-        public ProductsRepositoryDb(EFCoreContext dbContext)
+        public ProductRepositoryDb(EFCoreContext dbContext)
         {
             _dbContext = dbContext;
         }

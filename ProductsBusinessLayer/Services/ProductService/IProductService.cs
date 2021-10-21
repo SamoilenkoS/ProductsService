@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ProductsBusinessLayer
+namespace ProductsBusinessLayer.Services.ProductService
 {
-    public interface IProductsService
+    public interface IProductService
     {
         Task<Guid> CreateProduct(ProductDTO productDTO);
         Task<Product> DeleteProductById(Guid id);

@@ -6,8 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductsBusinessLayer;
 using ProductsBusinessLayer.MapperProfiles;
+using ProductsBusinessLayer.Services.AuthService;
+using ProductsBusinessLayer.Services.ProductService;
+using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Options;
 using ProductsDataLayer;
+using ProductsDataLayer.Repositories.ProductRepository;
+using ProductsDataLayer.Repositories.UserRepository;
 using System.Reflection;
 
 namespace ProductsPresentationLayer
@@ -55,8 +60,9 @@ namespace ProductsPresentationLayer
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IProductsRepository, ProductsRepositoryDb>();
-            services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IProductRepository, ProductRepositoryDb>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddControllers();
         }
 

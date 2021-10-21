@@ -1,13 +1,12 @@
 ﻿using ProductsCore.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductsDataLayer
+namespace ProductsDataLayer.Repositories.UserRepository
 {
     public interface IUserRepository
     {
         Task<Role?> GetRoleByLoginInfoAsync(LoginInfo loginInfo);
+        Task UpdatePasswordAsync(LoginInfo loginInfo);
+        Task<bool> VerifyLoginInfoAsync(LoginInfo loginInfo);
     }
 }
