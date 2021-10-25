@@ -8,6 +8,8 @@ using ProductsBusinessLayer.Services.AuthService;
 using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Requests;
 using Microsoft.Extensions.Logging;
+using ProductsBusinessLayer.DTOs;
+using ProductsBusinessLayer.Services.RegistrationService;
 
 namespace ProductsPresentationLayer.Controllers
 {
@@ -18,14 +20,17 @@ namespace ProductsPresentationLayer.Controllers
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
         private readonly ILogger<AccountsController> _logger;
+        private readonly IRegistrationService _registrationService;
 
         public AccountsController(
             IAuthService authService,
             IUserService userService,
+            IRegistrationService registrationService,
             ILogger<AccountsController> logger)
         {
             _authService = authService;
             _userService = userService;
+            _registrationService = registrationService;
             _logger = logger;
         }
 
@@ -97,10 +102,9 @@ namespace ProductsPresentationLayer.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(AccountInfo accountInfo)
+        public async Task<IActionResult> Register(AccountInfoDTO accountInfo)
         {
-            await Task.CompletedTask;
-            return Ok();
+            return Ok(await _registrationService.RegisterUserAsync(accountInfo));
         }
     }
 }

@@ -4,14 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProductsBusinessLayer;
 using ProductsBusinessLayer.MapperProfiles;
 using ProductsBusinessLayer.Services.AuthService;
 using ProductsBusinessLayer.Services.HashService;
 using ProductsBusinessLayer.Services.ProductService;
+using ProductsBusinessLayer.Services.RegistrationService;
+using ProductsBusinessLayer.Services.SmtpService;
 using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Options;
 using ProductsDataLayer;
+using ProductsDataLayer.Repositories.EmailRepository;
 using ProductsDataLayer.Repositories.ProductRepository;
 using ProductsDataLayer.Repositories.UserRepository;
 using System.Reflection;
@@ -36,6 +38,8 @@ namespace ProductsPresentationLayer
                 options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
 
             services.Configure<AuthOptions>(Configuration.GetSection(nameof(AuthOptions)));
+            services.Configure<SmtpOptions>(Configuration.GetSection(nameof(SmtpOptions)));
+
             var authOptions = Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>();
             services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -67,6 +71,10 @@ namespace ProductsPresentationLayer
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<ISmtpService, SmtpService>();
+            services.AddScoped<IRegistrationService, RegistrationService>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
+
             services.AddControllers();
         }
 

@@ -21,4 +21,4 @@ insert into Roles values (0, 'User');
 insert into Roles values (1, 'Manager');
 insert into Roles values (2, 'Admin');
 
-insert into Users values (NEWID(), 'Admin', 'Admin', 'Main', 'NgAgJYx5Rcu/glVJpfix6RB11/6aDevwy3dSV407NkM=', 2, 1);
+insert into Users(Id, [Login], FirstName, LastName, [Password], RoleId, IsActive) values (NEWID(), 'Admin', 'Admin', 'Main', 'NgAgJYx5Rcu/glVJpfix6RB11/6aDevwy3dSV407NkM=', 2, 1);

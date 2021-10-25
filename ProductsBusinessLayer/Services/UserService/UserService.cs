@@ -1,7 +1,6 @@
 ﻿using ProductsBusinessLayer.Services.HashService;
 using ProductsCore.Models;
 using ProductsDataLayer.Repositories.UserRepository;
-using System;
 using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer.Services.UserService

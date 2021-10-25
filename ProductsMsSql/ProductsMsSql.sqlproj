@@ -63,6 +63,7 @@
     <Build Include="Tables\Products.sql" />
     <Build Include="Tables\Roles.sql" />
     <Build Include="Tables\Users.sql" />
+    <Build Include="Tables\Emails.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PrefillDB.sql" />

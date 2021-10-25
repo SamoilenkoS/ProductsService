@@ -7,6 +7,7 @@ namespace ProductsDataLayer
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<AccountInfo> Users { get; set; }
+        public DbSet<Email> Emails { get; set; }
 
         public EFCoreContext(DbContextOptions<EFCoreContext> options) : base(options)
         {
