@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using ProductsBusinessLayer.Services.AuthService;
 using ProductsBusinessLayer.Services.UserService;
 using ProductsCore.Requests;
+using Microsoft.Extensions.Logging;
 
 namespace ProductsPresentationLayer.Controllers
 {
@@ -16,11 +17,16 @@ namespace ProductsPresentationLayer.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
+        private readonly ILogger<AccountsController> _logger;
 
-        public AccountsController(IAuthService authService, IUserService userService)
+        public AccountsController(
+            IAuthService authService,
+            IUserService userService,
+            ILogger<AccountsController> logger)
         {
             _authService = authService;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost("manager")]
@@ -81,10 +87,12 @@ namespace ProductsPresentationLayer.Controllers
                     Login = loginInfo.Login,
                     Role = userRole.Value
                 });
+                _logger.LogInformation($"User logged in: {loginInfo.Login}");
 
                 return Ok(token);
             }
 
+            _logger.LogWarning($"User login failed: {loginInfo}");
             return BadRequest("Invalid username or password.");
         }
 

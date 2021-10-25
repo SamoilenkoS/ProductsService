@@ -25,15 +25,13 @@ namespace ProductsDataLayer
 
             modelBuilder.Entity<AccountInfo>()
                 .OwnsOne(accountInfo => accountInfo.LoginInfo,
-                nawigationBuilder =>
+                navigationBuilder =>
                 {
-                    nawigationBuilder.Property(loginInfo => loginInfo.Login)
+                    navigationBuilder.Property(loginInfo => loginInfo.Login)
                         .HasColumnName("Login");
-                    nawigationBuilder.Property(loginInfo => loginInfo.Password)
+                    navigationBuilder.Property(loginInfo => loginInfo.Password)
                         .HasColumnName("Password");
                 });
-
-
         }
     }
 }

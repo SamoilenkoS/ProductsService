@@ -21,9 +21,13 @@ namespace ProductsBusinessLayer.Services.UserService
 
         public async Task<Role?> GetRoleByLoginInfoAsync(LoginInfo loginInfo)
         {
-            loginInfo.Password = _hashService.HashString(loginInfo.Password);
+            var hashedLoginInfo = new LoginInfo
+            {
+                Login = loginInfo.Login,
+                Password = _hashService.HashString(loginInfo.Password)
+            };
 
-            return await _userRepository.GetRoleByLoginInfoAsync(loginInfo);
+            return await _userRepository.GetRoleByLoginInfoAsync(hashedLoginInfo);
         }
 
         public async Task UpdatePasswordAsync(LoginInfo loginInfo)
