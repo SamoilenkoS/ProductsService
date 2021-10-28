@@ -91,6 +91,8 @@ namespace ProductsPresentationLayer
 
             app.UseRouting();
 
+            app.UseMiddleware<LoggerMiddleware>();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
