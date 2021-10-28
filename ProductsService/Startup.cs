@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,7 +42,7 @@ namespace ProductsPresentationLayer
             services.Configure<SmtpOptions>(Configuration.GetSection(nameof(SmtpOptions)));
 
             var authOptions = Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>();
-            services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
@@ -71,7 +72,7 @@ namespace ProductsPresentationLayer
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, HashService>();
-            services.AddScoped<ISmtpService, SmtpService>();
+            services.AddScoped<ISmtpService, SmtpServiceMoq>();
             services.AddScoped<IRegistrationService, RegistrationService>();
             services.AddScoped<IEmailRepository, EmailRepository>();
 

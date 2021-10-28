@@ -26,7 +26,6 @@ namespace ProductsDataLayer.Repositories.UserRepository
 
         public async Task<Role?> GetRoleByLoginInfoAsync(LoginInfo loginInfo)
         {
-            await GetAccountInfoByLoginInfo(loginInfo);
             var account = await GetAccountInfoByLoginInfoAsync(loginInfo);
 
             return account?.Role;

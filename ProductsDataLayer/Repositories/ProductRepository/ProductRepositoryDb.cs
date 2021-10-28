@@ -43,15 +43,9 @@ namespace ProductsDataLayer.Repositories.ProductRepository
         }
 
         public async Task<Product> GetById(Guid id)
-        {
-            var items = await _dbContext.Products.Where(x => x.Id == id).ToListAsync();
-            if(items.Count != 0)
-            {
-                return items[0];
-            }
-
-            return null;
-        }
+            => await _dbContext.Products
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
 
         public async Task<Product> Update(Product product)
         {
