@@ -22,9 +22,9 @@ namespace ProductsPresentationLayer
             {
                 streamWriter.WriteLine(
                     context.Request.Scheme + context.Request.Method + context.Request.QueryString);
-
-                await _next(context);
             }
+            
+            await _next(context);
         }
     }
 }
