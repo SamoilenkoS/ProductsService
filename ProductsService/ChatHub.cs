@@ -18,7 +18,9 @@ namespace ProductsPresentationLayer
                         {
                             var id = splitted[1];
                             var personalMessage = string.Join(' ', splitted[2..]);
-                            await Clients.Client(id).SendAsync("ReceiveMessage", Context.ConnectionId, personalMessage);
+                            await Clients.Client(id).SendAsync("ReceiveMessage",
+                                Context.ConnectionId,
+                                personalMessage);
                         }
                         break;
                 }
@@ -31,8 +33,12 @@ namespace ProductsPresentationLayer
 
         public override async Task OnConnectedAsync()
         {
-            await Clients.Others.SendAsync("ReceiveMessage", "SYSTEM", $"User {Context.ConnectionId} connected!");
-            await Clients.Caller.SendAsync("ReceiveMessage", "SYSTEM", $"Greetings newcomer!");
+            await Clients.Others.SendAsync("ReceiveMessage",
+                "SYSTEM",
+                $"User {Context.ConnectionId} connected!");
+            await Clients.Caller.SendAsync("ReceiveMessage",
+                "SYSTEM",
+                $"Greetings newcomer!");
         }
     }
 }
