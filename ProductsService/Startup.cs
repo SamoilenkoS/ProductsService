@@ -7,11 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductsBusinessLayer.MapperProfiles;
 using ProductsBusinessLayer.Services.AuthService;
+using ProductsBusinessLayer.Services.ChatSettingsService;
 using ProductsBusinessLayer.Services.HashService;
 using ProductsBusinessLayer.Services.ProductService;
 using ProductsBusinessLayer.Services.RegistrationService;
 using ProductsBusinessLayer.Services.SmtpService;
 using ProductsBusinessLayer.Services.UserService;
+using ProductsCore.Models;
 using ProductsCore.Options;
 using ProductsDataLayer;
 using ProductsDataLayer.Repositories.EmailRepository;
@@ -33,6 +35,14 @@ namespace ProductsPresentationLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost:5002";
+                options.InstanceName = "SampleInstance";
+            });
+
+            services.AddScoped<ISettingsService<ChatUserSettings>, ChatSettingsService>();
+
             services.AddSignalR();
             services.AddHttpContextAccessor();
 

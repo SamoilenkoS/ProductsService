@@ -1,45 +1,41 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using ProductsBusinessLayer;
+using ProductsBusinessLayer.Services.ChatSettingsService;
 using ProductsCore;
 using ProductsCore.Models;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProductsPresentationLayer
 {
     public class ChatHub : Hub
     {
-        private static IList<ChatUserSettings> UserSettings;
         private readonly ILogger<ChatHub> _logger;
+        private readonly ISettingsService<ChatUserSettings> _settingsService;
 
-        static ChatHub()
-        {
-            UserSettings = new List<ChatUserSettings>();
-        }
-
-        public ChatHub(ILogger<ChatHub> logger)
+        public ChatHub(
+            ILogger<ChatHub> logger,
+            ISettingsService<ChatUserSettings> settingsService)
         {
             _logger = logger;
+            _settingsService = settingsService;
         }
 
         public async Task SendMessage(string message)
         {
             var command = CommandHelper.CreateCommand(message);
 
-            await command.Execute(this, UserSettings);
+            await command.Execute(this, _settingsService);
         }
 
         public override async Task OnConnectedAsync()
         {
-            UserSettings.Add(
-                new ChatUserSettings
-                {
-                    ClientId = Context.ConnectionId
-                });
+            var val = await RedisDB.GetValue(Context.ConnectionId);
+            await _settingsService.SetValueAsync(Context.ConnectionId,
+                new ChatUserSettings { ClientId = Context.ConnectionId });
 
-            _logger.LogDebug(UserSettings.Count.ToString());
+            //_logger.LogDebug(UserSettings.Count.ToString());
 
             await Clients.Others.SendAsync(Consts.ClientMethods.ReceiveMessage,
                 CreateSystemMessage($"User {Context.ConnectionId} connected!"));
@@ -49,13 +45,6 @@ namespace ProductsPresentationLayer
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            UserSettings.Remove(
-                new ChatUserSettings
-                {
-                    ClientId = Context.ConnectionId
-                });
-            _logger.LogDebug(UserSettings.Count.ToString());
-
             return base.OnDisconnectedAsync(exception);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using ProductsBusinessLayer.Services.ChatSettingsService;
 using ProductsCore;
 using ProductsCore.Models;
 using System.Collections.Generic;
@@ -22,14 +23,14 @@ namespace ProductsBusinessLayer.Commands
 
         public async Task Execute(
             Hub hub,
-            IList<ChatUserSettings> userSettings)
+            ISettingsService<ChatUserSettings> settingsService)
         {
             CommandOutput commandOutput = null;
             if (MinArgsCount == null || _args.Length >= MinArgsCount)
             {
-                commandOutput = CreateCommandOutput(
+                commandOutput = await CreateCommandOutput(
                     hub.Context.ConnectionId,
-                    userSettings);
+                    settingsService);
             }
             if (commandOutput == null)
             {
@@ -65,9 +66,9 @@ namespace ProductsBusinessLayer.Commands
             }
         }
 
-        protected abstract CommandOutput CreateCommandOutput(
+        protected abstract Task<CommandOutput> CreateCommandOutput(
             string callerId,
-            IList<ChatUserSettings> userSettings);
+            ISettingsService<ChatUserSettings> settingsService);
 
         protected ChatMessage CreateSystemMessage(string message)
             => new ChatMessage

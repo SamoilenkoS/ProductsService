@@ -1,5 +1,6 @@
-﻿using ProductsCore.Models;
-using System.Collections.Generic;
+﻿using ProductsBusinessLayer.Services.ChatSettingsService;
+using ProductsCore.Models;
+using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer.Commands
 {
@@ -9,14 +10,15 @@ namespace ProductsBusinessLayer.Commands
 
         public InvalidCommand(string[] args) : base(args) { }
 
-        protected override CommandOutput CreateCommandOutput(
+        protected override Task<CommandOutput> CreateCommandOutput(
             string callerId,
-            IList<ChatUserSettings> userSettings)
+            ISettingsService<ChatUserSettings> settingsService)
         {
-            return new CommandOutput
-            {
-                Message = CreateSystemMessage("Invalid command!")
-            };
+            return Task.FromResult(
+                new CommandOutput
+                {
+                    Message = CreateSystemMessage("Invalid command!")
+                });
         }
     }
 }

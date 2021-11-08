@@ -1,7 +1,8 @@
-﻿using ProductsCore;
+﻿using ProductsBusinessLayer.Services.ChatSettingsService;
+using ProductsCore;
 using ProductsCore.Models;
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer.Commands
 {
@@ -11,16 +12,18 @@ namespace ProductsBusinessLayer.Commands
 
         public ColorCommand(string[] args) : base(args) { }
 
-        protected override CommandOutput CreateCommandOutput(
+        protected override async Task<CommandOutput> CreateCommandOutput(
             string callerId,
-            IList<ChatUserSettings> userSettings)
+             ISettingsService<ChatUserSettings> settingsService)
         {
             CommandOutput result = null;
             var colorString = _args[0];
             if (Enum.TryParse(typeof(ConsoleColor), colorString, out var color))
             {
                 var newColor = (ConsoleColor)color;
-                userSettings.GetSettingsByClientId(callerId).UserConsoleColor = newColor;
+                var currentUserSettings = await settingsService.GetValueAsync(callerId);
+                currentUserSettings.UserConsoleColor = newColor;
+                await settingsService.SetValueAsync(callerId, currentUserSettings);
 
                 result = new CommandOutput
                 {

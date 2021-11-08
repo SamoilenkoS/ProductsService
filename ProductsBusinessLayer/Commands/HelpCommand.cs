@@ -1,6 +1,7 @@
-﻿using ProductsCore;
+﻿using ProductsBusinessLayer.Services.ChatSettingsService;
+using ProductsCore;
 using ProductsCore.Models;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer.Commands
 {
@@ -10,14 +11,15 @@ namespace ProductsBusinessLayer.Commands
 
         public HelpCommand(string[] args) : base(args) { }
 
-        protected override CommandOutput CreateCommandOutput(
+        protected override Task<CommandOutput> CreateCommandOutput(
             string callerId,
-            IList<ChatUserSettings> userSettings)
+            ISettingsService<ChatUserSettings> settingsService)
         {
-            return new CommandOutput
-            {
-                Message = CreateSystemMessage(Consts.ServerMessages.Help)
-            };
+            return Task.FromResult(
+                new CommandOutput
+                {
+                    Message = CreateSystemMessage(Consts.ServerMessages.Help)
+                });
         }
     }
 }

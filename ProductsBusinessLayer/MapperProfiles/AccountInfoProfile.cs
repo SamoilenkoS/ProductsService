@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using ProductsBusinessLayer.DTOs;
 using ProductsCore.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProductsBusinessLayer.MapperProfiles
 {

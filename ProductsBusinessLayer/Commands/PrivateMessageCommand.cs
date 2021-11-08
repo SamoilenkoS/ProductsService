@@ -1,7 +1,8 @@
-﻿using ProductsCore;
+﻿using ProductsBusinessLayer.Services.ChatSettingsService;
+using ProductsCore;
 using ProductsCore.Models;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer.Commands
 {
@@ -21,19 +22,16 @@ namespace ProductsBusinessLayer.Commands
             _target = MessageTarget.Personal;
         }
 
-        protected override CommandOutput CreateCommandOutput(
+        protected override async Task<CommandOutput> CreateCommandOutput(
             string callerId,
-            IList<ChatUserSettings> userSettings)
+            ISettingsService<ChatUserSettings> settingsService)
         {
             CommandOutput result = null;
             var id = _args[0];
-            if (userSettings.GetSettingsByClientId(id) != null)
+            var userFromId = await settingsService.GetValueAsync(id);
+            if (userFromId != null)
             {
-                var igonoreList = userSettings
-                  .Where(x => x.MuteList
-                      .Contains(callerId))
-                  .Select(x => x.ClientId).ToList();
-                igonoreList.Add(callerId);
+                var igonoreList = new List<string> { callerId };
 
                 var personalMessage = string.Join(
                     Consts.CommandElementSeparator,
@@ -41,14 +39,14 @@ namespace ProductsBusinessLayer.Commands
 
                 if (!igonoreList.Contains(id))
                 {
+                    var callerSettings = await settingsService.GetValueAsync(callerId);
+
                     result = new CommandOutput
                     {
                         Message = new ChatMessage
                         {
                             Sender = callerId,
-                            MessageColor = userSettings
-                                .GetSettingsByClientId(callerId)
-                                .UserConsoleColor,
+                            MessageColor = callerSettings.UserConsoleColor,
                             Text = personalMessage,
                         },
                         IgnoreList = igonoreList,

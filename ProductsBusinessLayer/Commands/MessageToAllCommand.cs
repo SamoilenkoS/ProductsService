@@ -1,7 +1,8 @@
-﻿using ProductsCore;
+﻿using ProductsBusinessLayer.Services.ChatSettingsService;
+using ProductsCore;
 using ProductsCore.Models;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer.Commands
 {
@@ -16,22 +17,19 @@ namespace ProductsBusinessLayer.Commands
 
         public MessageToAllCommand(string[] args) : base(args) { }
 
-        protected override CommandOutput CreateCommandOutput(
+        protected override async Task<CommandOutput> CreateCommandOutput(
             string callerId,
-            IList<ChatUserSettings> userSettings)
+            ISettingsService<ChatUserSettings> settingsService)
         {
-            var igonoreList = userSettings
-                  .Where(x => x.MuteList
-                      .Contains(callerId))
-                  .Select(x => x.ClientId).ToList();
-            igonoreList.Add(callerId);
+            var igonoreList = new List<string> { callerId };
+            var userSettings = await settingsService.GetValueAsync(callerId);
 
             return new CommandOutput
             {
                 Message = new ChatMessage
                 {
                     Sender = callerId,
-                    MessageColor = userSettings.GetSettingsByClientId(callerId).UserConsoleColor,
+                    MessageColor = userSettings.UserConsoleColor,
                     Text = string.Join(Consts.CommandElementSeparator, _args)
                 },
                 IgnoreList = igonoreList

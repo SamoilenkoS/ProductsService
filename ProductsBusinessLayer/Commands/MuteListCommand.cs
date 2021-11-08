@@ -1,7 +1,8 @@
-﻿using ProductsCore;
+﻿using ProductsBusinessLayer.Services.ChatSettingsService;
 using ProductsCore.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ProductsBusinessLayer.Commands
 {
@@ -11,21 +12,21 @@ namespace ProductsBusinessLayer.Commands
 
         public MuteListCommand(string[] args) : base(args) { }
 
-        protected override CommandOutput CreateCommandOutput(
-            string callerId,
-            IList<ChatUserSettings> userSettings)
-        {
-            return new CommandOutput
-            {
-                Message = CreateSystemMessage(
-                    FormIgnoreListMessage(
-                        userSettings.GetSettingsByClientId(callerId).MuteList))
-            };
-        }
-
         private string FormIgnoreListMessage(HashSet<string> ignoreIds)
         {
             return string.Join(Environment.NewLine, ignoreIds);
+        }
+
+        protected override Task<CommandOutput> CreateCommandOutput(
+            string callerId,
+            ISettingsService<ChatUserSettings> settingsService)
+        {
+            return Task.FromResult(
+                new CommandOutput
+                {
+                    Message = CreateSystemMessage(
+                        FormIgnoreListMessage(new HashSet<string>()))
+                });
         }
     }
 }
