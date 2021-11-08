@@ -18,11 +18,11 @@ namespace ProductsPresentationLayer
 
         public async Task InvokeAsync(HttpContext context)
         {
-            using (var streamWriter = new StreamWriter("middlewareLogs.txt", true))
-            {
-                streamWriter.WriteLine(
-                    context.Request.Scheme + context.Request.Method + context.Request.QueryString);
-            }
+            //using (var streamWriter = new StreamWriter("middlewareLogs.txt", true))
+            //{
+            //    streamWriter.WriteLine(
+            //        context.Request.Scheme + context.Request.Method + context.Request.QueryString);
+            //}
             
             await _next(context);
         }

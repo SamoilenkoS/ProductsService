@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using ProductsBusinessLayer;
 using ProductsCore;
 using ProductsCore.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProductsPresentationLayer
@@ -26,77 +26,9 @@ namespace ProductsPresentationLayer
 
         public async Task SendMessage(string message)
         {
-            if (message.StartsWith(Consts.CommandStartSign))
-            {
-                message = message[1..];
-                var splitted = message.Split(Consts.CommandElementSeparator);
-                var result = false;
-                switch (splitted[0].ToLower())
-                {
-                    case Consts.Commands.PrivateMessage:
-                        if(splitted.Length > 2)
-                        {
-                            var id = splitted[1];
-                            if (this[id] != null)
-                            {
-                                var personalMessage = string.Join(
-                                    Consts.CommandElementSeparator,
-                                    splitted[2..]);
+            var command = CommandHelper.CreateCommand(message);
 
-                                await Clients.Clients(id).SendAsync(Consts.ClientMethods.ReceiveMessage,
-                                    new ChatMessage
-                                    {
-                                        Sender = Context.ConnectionId,
-                                        MessageColor = this[Context.ConnectionId].UserConsoleColor,
-                                        Text = personalMessage
-                                    });
-
-                                result = true;
-                            }
-                        }
-                        break;
-                    case Consts.Commands.Help:
-                        await Clients.Caller.SendAsync(
-                            Consts.ClientMethods.ReceiveMessage,
-                            CreateSystemMessage(Consts.ServerMessages.Help));
-                        result = true;
-                        break;
-                    case Consts.Commands.Color:
-                        if(splitted.Length == 2)
-                        {
-                            var colorString = splitted[1];
-                            if (Enum.TryParse(typeof(ConsoleColor), colorString, out var color))
-                            {
-                                var newColor = (ConsoleColor)color;
-                                this[Context.ConnectionId].UserConsoleColor = newColor;
-
-                                await Clients.Caller.SendAsync(
-                                    Consts.ClientMethods.ColorChanged, newColor);
-
-                                result = true;
-                            }
-                        }
-                        break;
-                }
-
-                if (!result)
-                {
-                    await Clients.Caller.SendAsync(
-                        Consts.ClientMethods.ReceiveMessage,
-                        CreateSystemMessage("Invalid command!"));
-                }
-            }
-            else
-            {
-                await Clients.Others.SendAsync(
-                    Consts.ClientMethods.ReceiveMessage,
-                    new ChatMessage
-                    {
-                        Sender = Context.ConnectionId,
-                        MessageColor = this[Context.ConnectionId].UserConsoleColor,
-                        Text = message
-                    });
-            }
+            await command.Execute(this, UserSettings);
         }
 
         public override async Task OnConnectedAsync()
@@ -115,7 +47,7 @@ namespace ProductsPresentationLayer
                CreateSystemMessage($"Greetings newcomer!"));
         }
 
-        public override Task OnDisconnectedAsync(System.Exception exception)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             UserSettings.Remove(
                 new ChatUserSettings
@@ -134,8 +66,5 @@ namespace ProductsPresentationLayer
                 MessageColor = System.ConsoleColor.Blue,
                 Text = message
             };
-
-        private ChatUserSettings this[string connectionId]
-            => UserSettings.FirstOrDefault(x => x.ClientId == connectionId);
     }
 }

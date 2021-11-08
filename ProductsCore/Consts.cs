@@ -13,6 +13,9 @@ namespace ProductsCore
             public const string PrivateMessage = "msg";
             public const string Help = "help";
             public const string Color = "color";
+            public const string Mute = "mute";
+            public const string MuteList = "mutelist";
+            public const string Unmute = "unmute";
         }
 
         public static class ClientMethods
@@ -30,8 +33,14 @@ namespace ProductsCore
                 + Environment.NewLine +
                 "Text of your message => send message to all in chat";
 
-            public static string ColorChanged(string color) =>
-                string.Format("Color changed to {0}", color);
+            public static string ColorChanged(string color)
+                => string.Format("Color changed to {0}", color);
+
+            public static string UserMuted(string userId)
+                => string.Format("{0} muted!", userId);
+
+            public static string UserUnmuted(string userId)
+                => string.Format("{0} unmuted!", userId);
         }
     }
 }
