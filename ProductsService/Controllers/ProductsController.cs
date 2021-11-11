@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ProductsBusinessLayer.DTOs;
 using ProductsBusinessLayer.Services.ProductService;
 using System;
@@ -11,18 +12,31 @@ namespace ProductsPresentationLayer.Controllers
     public class ProductsController : ControllerBase
     {
         private static IProductService _productsService;
+        private ILogger<ProductsController> _loggger;
 
-        public ProductsController(IProductService productsService)
+        public ProductsController(
+            IProductService productsService,
+            ILogger<ProductsController> loggger)
         {
             _productsService = productsService;
+            _loggger = loggger;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
-            var items = await _productsService.GetAllProducts();
+            try
+            {
+                var items = await _productsService.GetAllProducts();
 
-            return Ok(items);
+                return Ok(items);
+            }
+            catch(Exception ex)
+            {
+                _loggger.LogError(ex.Message);
+
+                return StatusCode(500);
+            }
         }
 
         [HttpGet("{id}")]

@@ -35,6 +35,8 @@ namespace ProductsPresentationLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks()
+                .AddDbContextCheck<EFCoreContext>();
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = "localhost:5002";
@@ -111,6 +113,7 @@ namespace ProductsPresentationLayer
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapHealthChecks("/");
             });
         }
     }

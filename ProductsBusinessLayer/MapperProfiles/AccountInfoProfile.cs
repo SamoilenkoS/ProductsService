@@ -15,7 +15,8 @@ namespace ProductsBusinessLayer.MapperProfiles
                 .ForMember(x => x.LoginInfo, opt => opt.MapFrom(src => src.LoginInfo))
                 .ForMember(x => x.Role, opt => opt.MapFrom(src => Role.User))
                 .ForMember(x => x.Email, opt => opt.Ignore())
-                .ForMember(x => x.EmailId, opt => opt.Ignore());
+                .ForMember(x => x.EmailId, opt => opt.Ignore())
+                .ForMember(x => x.Id, opt => opt.Ignore());
         }
     }
 }

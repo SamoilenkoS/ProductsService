@@ -66,7 +66,7 @@ namespace ProductsBusinessLayer.Services.RegistrationService
         private async Task<Guid> SaveUserInfoAsync(AccountInfoDTO accountInfoDTO, int? emailId)
         {
             var accountInfo = _mapper.Map<AccountInfo>(accountInfoDTO);
-            accountInfo.EmailId = emailId.Value;
+            accountInfo.EmailId = emailId;
 
             var result = await _userRepository.AddUserAsync(accountInfo);
             return result;
